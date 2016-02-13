@@ -4,6 +4,9 @@ class Beer < ActiveRecord::Base
 
   belongs_to :brewery
   has_many :ratings, dependent: :destroy
+  has_many :raters, -> { uniq }, through: :ratings, source: :user
+
+  validates_presence_of :name
 
 
   def to_s

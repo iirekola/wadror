@@ -24,6 +24,8 @@ group :development, :test do
   gem "better_errors"
 end
 
+gem 'bcrypt', '~> 3.1.7'
+
 # Use SCSS for stylesheets
 
 gem 'sass-rails', '~> 5.0'

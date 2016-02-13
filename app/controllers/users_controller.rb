@@ -49,6 +49,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
 
+
     respond_to do |format|
 
       if @user.save
@@ -79,7 +80,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
 
-      if @user.update(user_params)
+      if user_params[:username].nil? and current_user == @user and @user.update(user_params)
 
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
 
@@ -105,7 +106,10 @@ class UsersController < ApplicationController
 
   def destroy
 
-    @user.destroy
+    if current_user == @user
+      @user.destroy
+      session[:user_id] = nil
+    end
 
     respond_to do |format|
 
@@ -136,7 +140,7 @@ class UsersController < ApplicationController
 
     def user_params
 
-      params.require(:user).permit(:username)
+      params.require(:user).permit(:username, :password, :password_confirmation)
 
     end
 

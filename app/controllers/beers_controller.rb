@@ -32,6 +32,7 @@ class BeersController < ApplicationController
 
     @breweries = Brewery.all
     @styles = ["Weizen", "Lager", "Pale Ale", "IPA", "Porter"]
+    # huom olen paha, copy paste metodissa create
   end
 
 
@@ -53,8 +54,6 @@ class BeersController < ApplicationController
   def create
 
     @beer = Beer.new(beer_params)
-
-
     respond_to do |format|
 
       if @beer.save
@@ -65,6 +64,8 @@ class BeersController < ApplicationController
 
       else
 
+        @breweries = Brewery.all
+        @styles = ["Weizen", "Lager", "Pale ale", "IPA", "Porter"];
         format.html { render :new }
 
         format.json { render json: @beer.errors, status: :unprocessable_entity }
