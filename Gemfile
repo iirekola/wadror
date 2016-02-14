@@ -13,15 +13,19 @@ gem 'rails', '4.2.4'
 
 group :development, :test do
   gem 'sqlite3'
+  gem 'better_errors'
+  gem 'rspec-rails', '~> 3.0'
+end
+
+group :test do
+  gem 'factory_girl_rails'
+  gem 'capybara'
+  gem 'launchy'
 end
 
 group :production do
    gem 'pg'
    gem 'rails_12factor'
-end
-
-group :development, :test do
-  gem "better_errors"
 end
 
 gem 'bcrypt', '~> 3.1.7'
