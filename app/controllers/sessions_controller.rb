@@ -1,6 +1,5 @@
 class SessionsController < ApplicationController
   def new
-    # renderöi kirjautumissivun
   end
 
   def create

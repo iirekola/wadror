@@ -4,8 +4,6 @@
 
 <h1>Listing Breweries</h1>
 
-<p> Number of breweries: <%= @breweries.count %> </p>
-
 
 
 <table>
@@ -36,10 +34,10 @@
 
         <td><%= brewery.year %></td>
 
-        <td><%= link_to 'Edit', edit_brewery_path(brewery) %></td>
-
-        <td><%= link_to 'Destroy', brewery, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-
+        <% if current_user %>
+          <td><%= link_to 'Edit', edit_brewery_path(brewery) %></td>
+          <td><%= link_to 'Destroy', brewery, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
 
     <% end %>
@@ -55,5 +53,6 @@
 
 
 <%= link_to 'New Brewery', new_brewery_path %>
+
 <br>
 <%= link_to 'List of beers', beers_path %>

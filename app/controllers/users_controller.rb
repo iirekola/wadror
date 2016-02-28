@@ -108,7 +108,7 @@ class UsersController < ApplicationController
 
     if current_user == @user
       @user.destroy
-      session[:user_id] = nil
+      #session[:user_id] = nil
     end
 
     respond_to do |format|

@@ -1,31 +1,35 @@
 require 'rails_helper'
 
+include Helpers
+
 describe "Beer" do
-  let!(:brewery) { FactoryGirl.create :brewery, name:"Testi" }
-
-  it "is created when name isn't empty" do
-    visit new_beer_path
-    fill_in('beer[name]', with:'Testin paras')
-    select('Lager', from:'beer[style]')
-    select('Testi', from:'beer[brewery_id]')
-
-    expect{
-      click_button "Create Beer"
-    }.to change{Beer.count}.from(0).to(1)
-    expect(brewery.beers.count).to eq(1)
+  before :each do
+    FactoryGirl.create :brewery, name:"testbrew"
   end
 
-  it "is not saved if name is empty" do
-    visit new_beer_path
-    fill_in('beer[name]', with:' ')
-    select('Lager', from:'beer[style]')
-    select('Testi', from:'beer[brewery_id]')
-    click_button "Create Beer"
+  describe "if a user logged in" do
+    before :each do
+      FactoryGirl.create :user
+      sign_in(username:"Pekka", password:"Foobar1")
+    end
 
-    expect{
+    it "a new beer is created if a valid name specified" do
+      visit new_beer_path
+      fill_in('beer_name', with:'CrapIPA')
+      select('Lager', from:'beer[style]')
+      expect{
+        click_button "Create Beer"
+      }.to change{Beer.count}.from(0).to(1)
+    end
+
+    it "is not created if name not valid" do
+      visit new_beer_path
       click_button "Create Beer"
-    }.not_to change{Beer.count}
+      expect(Beer.count).to be(0)
+      expect(page).to have_content 'prohibited this beer from being saved'
+      expect(page).to have_content "Name can't be blank"
+    end
 
-    expect(page).to have_content 'Name can\'t be blank'
   end
+
 end
