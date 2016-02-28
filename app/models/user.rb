@@ -38,6 +38,11 @@ class User < ActiveRecord::Base
     rated.sort_by { |brewery| -rating_of_brewery(brewery) }.first
   end
 
+  def self.top(n)
+    sorted_by_rating_in_desc_order = User.all.sort_by{ |u| -(u.ratings.count||0) }
+    sorted_by_rating_in_desc_order.first(n)
+  end
+
   private
 
   def rating_of_style(style)

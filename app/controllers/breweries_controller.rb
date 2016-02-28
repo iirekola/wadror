@@ -6,31 +6,27 @@ class BreweriesController < ApplicationController
   # GET /breweries
 
   # GET /breweries.json
-
-
   def index
-
-    @breweries = Brewery.all
+    @active_breweries = Brewery.active
+    @retired_breweries = Brewery.retired
   end
-
 
   # GET /breweries/1
 
   # GET /breweries/1.json
 
-
   def show
   end
 
 
+
   # GET /breweries/new
-
-
   def new
 
     @brewery = Brewery.new
 
   end
+
 
 
   # GET /breweries/1/edit
@@ -41,11 +37,10 @@ class BreweriesController < ApplicationController
   end
 
 
+
   # POST /breweries
 
   # POST /breweries.json
-
-
   def create
 
     @brewery = Brewery.new(brewery_params)
@@ -70,6 +65,7 @@ class BreweriesController < ApplicationController
     end
 
   end
+
 
 
   # PATCH/PUT /breweries/1
@@ -100,6 +96,7 @@ class BreweriesController < ApplicationController
   end
 
 
+
   # DELETE /breweries/1
 
   # DELETE /breweries/1.json
@@ -124,8 +121,6 @@ class BreweriesController < ApplicationController
   private
 
     # Use callbacks to share common setup or constraints between actions.
-
-
     def set_brewery
 
       @brewery = Brewery.find(params[:id])
@@ -133,12 +128,13 @@ class BreweriesController < ApplicationController
     end
 
 
+
     # Never trust parameters from the scary internet, only allow the white list through.
 
 
     def brewery_params
 
-      params.require(:brewery).permit(:name, :year)
+      params.require(:brewery).permit(:name, :year, :active)
 
     end
 

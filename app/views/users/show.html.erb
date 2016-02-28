@@ -38,9 +38,9 @@
 </p>
 
 <% if @user == current_user %>
-  <%= link_to 'Delete account', @user, method: :delete, data: {confirm: 'Are you sure?' } %>
+  <%= link_to 'Delete account', @user, class:"btn btn-danger", method: :delete, data: {confirm: 'Are you sure?' } %>
   
 
-<%= link_to 'Edit', edit_user_path(@user) %>
+<%= link_to 'Edit', edit_user_path(@user), class:"btn btn-primary" %>
 
 <% end %>

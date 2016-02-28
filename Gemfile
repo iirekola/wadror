@@ -85,6 +85,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'capybara'
   gem 'launchy'
+  gem 'webmock'
 end
 
 gem 'simplecov', require: false
@@ -110,4 +111,10 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.0'
 end
 
+gem 'httparty'
+
+gem 'bootstrap-sass'
+group :development do
+  gem 'rails_layout'
+end
 
