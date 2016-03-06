@@ -2,35 +2,34 @@
 
 <div class="row">
   <div class="col-md-3">
-    Best beers
+    <h3>Best beers</h3>
     <div class="row">
       <%= render 'list', items: @beers %>
     </div>
   </div>
-  <div class="col-md-3">
-    Best breweries
+  <div class="col-md-3 col-md-offset-1">
+    <h3>Best breweries</h3>
     <div class="row">
       <%= render 'list', items: @breweries %>
     </div>
   </div>
-  <div class="col-md-3">
-    Best Styles
+  <div class="col-md-3 col-md-offset-1">
+    <h3>Best Styles</h3>
+    <div class="row">
+      <%= render 'list', items: @styles %>
+    </div>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-12">
-    Most active users
-    <div class="row">
-      <div class="col-md-8 col-md-6>
-
-      </div>
-    </div>
+    <h3>Most active users</h3>
+    <%= render 'active_users', users: @users %>
   </div>
 </div>
 
 <p>
-  Recent ratings
+  <h3>Recent ratings</h3>
   <ul>
     <% @ratings.recent.each do |rating| %>
      <li> <%= rating %> <%= link_to rating.user.username, rating.user %> </li>

@@ -9,7 +9,7 @@
 </p>
 
 <% if @user.ratings.any? %>
-  <p>Favorite style <%= @user.favorite_style %></p>
+  <p>Favorite style <%= @user.favorite_style.name %></p>
 
   <p>Favorite brewery <%= @user.favorite_brewery.name %></p>
 <% end %>
@@ -44,3 +44,5 @@
 <%= link_to 'Edit', edit_user_path(@user), class:"btn btn-primary" %>
 
 <% end %>
+
+

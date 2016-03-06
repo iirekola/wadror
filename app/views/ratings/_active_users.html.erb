@@ -1,0 +1,30 @@
+<table class="table table">
+  <thead>
+  <tr>
+    <th></th>
+    <th>favorite beer</th>
+    <th>prefered style</th>
+    <th>favorite brewery</th>
+    <th>ratings</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% users.each do |user| %>
+    <tr>
+      <td><%= link_to user.username, user %></td>
+      <% if user.ratings.any? %>
+        <td><%= user.favorite_beer.name %></td>
+        <td><%= user.favorite_style %></td>
+        <td><%= user.favorite_brewery.name %></td>
+        <td><%= user.ratings.count %></td>
+      <% else %>
+        <td>no favorite beer</td>
+        <td>no preferred style</td>
+        <td>no favorite brewery</td>
+        <td>no ratings</td>
+      <% end %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
