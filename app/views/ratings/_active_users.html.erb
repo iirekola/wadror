@@ -15,7 +15,7 @@
       <td><%= link_to user.username, user %></td>
       <% if user.ratings.any? %>
         <td><%= user.favorite_beer.name %></td>
-        <td><%= user.favorite_style %></td>
+        <td><%= user.favorite_style.name %></td>
         <td><%= user.favorite_brewery.name %></td>
         <td><%= user.ratings.count %></td>
       <% else %>

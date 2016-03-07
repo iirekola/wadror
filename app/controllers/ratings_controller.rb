@@ -1,5 +1,8 @@
 class RatingsController < ApplicationController
+
+
   def index
+    render :index if fragment_exist?("ratings" )
     @ratings = Rating.all
     @beers = Beer.top(3)
     @users = User.top(3)

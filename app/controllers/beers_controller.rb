@@ -4,7 +4,7 @@ class BeersController < ApplicationController
 
   before_action :ensure_that_signed_in, except: [:index, :show, :list, :nglist]
   before_action :ensure_that_admin, only: [:destroy]
-
+  before_action :skip_if_cached, only:[:index]
 
   def list
   end
@@ -12,19 +12,18 @@ class BeersController < ApplicationController
   def nglist
   end
 
-  # GET /beers
+  def skip_if_cached
+    @order = params[:order] || 'name'
+    return render :index if fragment_exist?( "beerlist-#{@order}"  )
+  end
 
-  # GET /beers.json
   def index
-
     @beers = Beer.includes(:brewery, :style).all
 
-    order = params[:order] || 'name'
-
-    @beers = case order
+    case @order
       when 'name' then @beers.sort_by{ |b| b.name }
       when 'brewery' then @beers.sort_by{ |b| b.brewery.name }
-      when 'style' then @beers.sort_by{ |b| b.style.name }
+      when 'style' then @beers.sort_by{ |b| b.style.name }
     end
   end
 
@@ -71,6 +70,7 @@ class BeersController < ApplicationController
 
       if @beer.save
 
+        ["beerlist-name", "beerlist-brewery", "beerlist-style"].each{ |f| expire_fragment(f) }
         format.html { redirect_to beers_path, notice: 'Beer was successfully created.' }
 
         format.json { render :show, status: :created, location: @beer }
@@ -99,6 +99,7 @@ class BeersController < ApplicationController
 
       if @beer.update(beer_params)
 
+        ["beerlist-name", "beerlist-brewery", "beerlist-style"].each{ |f| expire_fragment(f) }
         format.html { redirect_to @beer, notice: 'Beer was successfully updated.' }
         format.json { render :show, status: :ok, location: @beer }
 
@@ -123,6 +124,7 @@ class BeersController < ApplicationController
 
     @beer.destroy
 
+    ["beerlist-name", "beerlist-brewery", "beerlist-style"].each{ |f| expire_fragment(f) }
     respond_to do |format|
 
       format.html { redirect_to beers_url, notice: 'Beer was successfully destroyed.' }

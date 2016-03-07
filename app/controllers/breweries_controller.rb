@@ -3,8 +3,14 @@ class BreweriesController < ApplicationController
   before_action :set_brewery, only: [:show, :edit, :update, :destroy]
   before_action :ensure_that_signed_in, except: [:index, :show]
   before_action :ensure_that_admin, only: [:destroy]
+  before_action :skip_if_cached, only:[:index]
 
   def nglist
+  end
+
+  def skip_if_cached
+    @order = params[:order] || 'name'
+    return render :index if fragment_exist?( "brewerylist-#{@order}"  )
   end
 
   # GET /breweries
@@ -15,14 +21,14 @@ class BreweriesController < ApplicationController
     order = params[:order] || 'name'
 
     @active_breweries = Brewery.active
-    @active_breweries = case order
+    case @order
       when session[:brewery_ordered_by] then @active_breweries.reverse_order!
       when 'name' then @active_breweries.sort_by{ |b| b.name }
       when 'year' then @active_breweries.sort_by{ |b| b.year }
     end
 
     @retired_breweries = Brewery.retired
-    @retired_breweries = case order
+    case @order
       when session[:brewery_ordered_by] then @retired_breweries.reverse_order!
       when 'name' then @retired_breweries.sort_by{ |b| b.name }
       when 'year' then @retired_breweries.sort_by{ |b| b.year }
@@ -71,6 +77,7 @@ class BreweriesController < ApplicationController
 
       if @brewery.save
 
+        ["brewerylist-name", "brewerylist-year"].each{ |f| expire_fragment(f) }
         format.html { redirect_to @brewery, notice: 'Brewery was successfully created.' }
 
         format.json { render :show, status: :created, location: @brewery }
@@ -100,6 +107,7 @@ class BreweriesController < ApplicationController
 
       if @brewery.update(brewery_params)
 
+       ["brewerylist-name", "brewerylist-year"].each{ |f| expire_fragment(f) }
         format.html { redirect_to @brewery, notice: 'Brewery was successfully updated.' }
 
         format.json { render :show, status: :ok, location: @brewery }
@@ -127,6 +135,7 @@ class BreweriesController < ApplicationController
 
     @brewery.destroy
 
+    ["brewerylist-name", "brewerylist-year"].each{ |f| expire_fragment(f) }
     respond_to do |format|
 
       format.html { redirect_to breweries_url, notice: 'Brewery was successfully destroyed.' }
