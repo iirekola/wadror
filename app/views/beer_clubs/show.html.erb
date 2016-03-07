@@ -11,12 +11,25 @@
 <% if @beer_club.members.any? %>
 
   <h3>Members</h3>
-
   <ul>
-    <% @beer_club.members.each do |member| %>
-      <li>
-      <%= link_to member.username, member %>
-      </li>
+    <% @beer_club.memberships.each do |membership| %>
+      <% if membership.confirmed %>
+        <li><%= link_to membership.user.username, membership.user %></li>
+      <% end %>
+    <% end %>
+  </ul>
+
+  <h3>Pending applications</h3>
+  <ul>
+    <% @beer_club.memberships.each do |membership| %>
+      <% unless membership.confirmed %>
+        <li>
+          <%= link_to membership.user.username, membership.user %>
+          <% if current_user.in? @beer_club.members %>
+            <%= link_to 'confirm', confirm_membership_path, class:"btn btn-primary" %>
+          <% end %>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 
@@ -27,6 +40,8 @@
   </p>
 
 <% end %>
+
+<br>
 
 <% if current_user.in? @beer_club.members %>
   <%= form_for(@membership, method: "delete") do |f| %>

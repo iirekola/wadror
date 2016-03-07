@@ -24,9 +24,7 @@ Rails.application.routes.draw do
   get 'beerlist', to: 'beers#list'
   get 'ngbeerlist', to:'beers#nglist'
   get 'auth/:provider/callback', to: 'sessions#create_oauth'
- 
-
-
+  get 'confirm_membership', to: 'memberships#confirm_membership'
 
   # The priority is based upon order of creation: first created -> highest priority.
 

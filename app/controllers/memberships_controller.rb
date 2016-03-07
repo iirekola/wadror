@@ -1,6 +1,10 @@
 class MembershipsController < ApplicationController
   before_action :set_membership, only: [:show, :edit, :update, :destroy]
 
+  def confirm_membership
+    redirect_to :back
+  end
+
   # GET /memberships
   # GET /memberships.json
   def index
@@ -59,6 +63,15 @@ class MembershipsController < ApplicationController
       format.html { redirect_to user_path(@membership.user), notice: 'Membership was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def toggle_activity
+    membership = Membership.find(params[:id])
+    membership.update_attribute :confirmed, (not membership.confirmed)
+
+    new_status = membership.confirmed? ? "confirmed" : "pending"
+
+    redirect_to :back, notice:"membership confirmed"
   end
 
   private
